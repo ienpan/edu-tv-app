@@ -3,7 +3,8 @@ apply plugin: 'com.android.application'
 android {
     namespace "com.edu.tv.app"
     compileSdkVersion 34
-    defaultConfig {\n        applicationId "com.edu.tv.app"
+    defaultConfig {
+        applicationId "com.edu.tv.app"
         minSdkVersion 21
         targetSdkVersion 34
         versionCode 1
