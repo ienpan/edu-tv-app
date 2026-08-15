@@ -37,9 +37,10 @@ jobs:
 
     - name: Set up Android SDK
       run: |
-        echo "y" | sudo $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-33" "build-tools;33.0.0"
+        export ANDROID_HOME=$HOME/android-sdk
+        mkdir -p $ANDROID_HOME
+        yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-33" "build-tools;33.0.0" 2>/dev/null || true
       env:
-        ANDROID_HOME: ${{ runner.temp }}/android-sdk
         JAVA_HOME: ${{ env.JAVA_HOME }}
 
     - name: Cache Gradle
