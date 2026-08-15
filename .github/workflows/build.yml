@@ -1,10 +1,8 @@
-name: Build Edu TV App APK
+name: Build Edu TV App
 
 on:
   push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -12,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
+    - name: Checkout
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
+    - name: Setup Node
       uses: actions/setup-node@v4
       with:
         node-version: '20'
@@ -23,13 +21,13 @@ jobs:
     - name: Install dependencies
       run: npm install --ignore-scripts
       
-    - name: Build web app
+    - name: Build web
       run: npm run build
       
     - name: Sync Capacitor
       run: npx cap sync android
       
-    - name: Setup JDK 17
+    - name: Setup Java
       uses: actions/setup-java@v4
       with:
         java-version: '17'
@@ -37,61 +35,26 @@ jobs:
         
     - name: Setup Android SDK
       run: |
+        echo "ANDROID_HOME=$ANDROID_HOME"
+        echo "JAVA_HOME=$JAVA_HOME"
         export ANDROID_HOME=$HOME/android-sdk
         mkdir -p $ANDROID_HOME
-        yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-33" "build-tools;33.0.2" --sdk_root=$ANDROID_HOME
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "build-tools;33.0.2" --sdk_root=$ANDROID_HOME --verbose
       env:
         JAVA_HOME: ${{ env.JAVA_HOME }}
         
-    - name: Cache Gradle
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-          
-    - name: Build Debug APK
+    - name: Build APK
       run: |
         cd android
         chmod +x gradlew
         export ANDROID_HOME=$HOME/android-sdk
         export JAVA_HOME=$JAVA_HOME_17_X64
-        ./gradlew clean
-        ./gradlew assembleDebug
+        ./gradlew assembleDebug --info 2>&1 | tail -100
+        ls -la app/build/outputs/apk/debug/
         
-    - name: Upload Debug APK
+    - name: Upload APK
       uses: actions/upload-artifact@v4
-      with:
-        name: app-debug.apk
-        path: android/app/build/outputs/apk/debug/app-debug.apk
-        retention-days: 30
-        
-    - name: Build Release APK
-      run: |
-        cd android
-        export ANDROID_HOME=$HOME/android-sdk
-        export JAVA_HOME=$JAVA_HOME_17_X64
-        ./gradlew assembleRelease
-        
-    - name: Upload Release APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-release.apk
-        path: android/app/build/outputs/apk/release/app-release.apk
-        retention-days: 30
-        
-    - name: Summary
       if: always()
-      run: |
-        echo "## 📱 构建结果" >> $GITHUB_STEP_SUMMARY
-        if [ -f "android/app/build/outputs/apk/debug/app-debug.apk" ]; then
-          echo "✅ Debug APK 生成成功" >> $GITHUB_STEP_SUMMARY
-        fi
-        if [ -f "android/app/build/outputs/apk/release/app-release.apk" ]; then
-          echo "✅ Release APK 生成成功" >> $GITHUB_STEP_SUMMARY
-        fi
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "📥 下载地址: Actions → Artifacts" >> $GITHUB_STEP_SUMMARY
+      with:
+        name: app-debug
+        path: android/app/build/outputs/apk/debug/app-debug.apk
