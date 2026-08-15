@@ -5,7 +5,7 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   build:
@@ -85,4 +85,4 @@ jobs:
           echo "✅ Release APK 生成成功" >> $GITHUB_STEP_SUMMARY
         fi
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "📥 下载地址在 Actions → Artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "📥 下载地址: Actions → Artifacts" >> $GITHUB_STEP_SUMMARY

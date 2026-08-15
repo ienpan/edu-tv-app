@@ -1,4 +1,4 @@
-# 🎓 启蒙乐园 - 小米电视教育应用
+# 启蒙乐园 - 小米电视教育应用
 
 寓教于乐的小米电视学习应用，覆盖小学1-6年级数语英科四科。
 
@@ -31,8 +31,6 @@ npm run dev
 1. 创建GitHub仓库并推送代码
 2. 触发Actions构建
 3. 下载APK安装到电视
-
-详细步骤见 [GITHUB_ACTIONS_GUIDE.md](./GITHUB_ACTIONS_GUIDE.md)
 
 ## 项目结构
 ```
