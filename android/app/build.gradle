@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     namespace "com.edu.tv.app"
-    compileSdkVersion 33
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.edu.tv.app"
         minSdkVersion 22
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
