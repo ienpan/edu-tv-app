@@ -1,0 +1,12 @@
+{
+  "appId": "com.edu.tv.app",
+  "appName": "启蒙乐园",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#667eea",
+    "allowMixedContent": false,
+    "webviewDebugging": true,
+    "scheme": "app"
+  }
+}
