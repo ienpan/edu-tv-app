@@ -35,12 +35,9 @@ jobs:
         
     - name: Setup Android SDK
       run: |
-        echo "ANDROID_HOME=$ANDROID_HOME"
-        echo "JAVA_HOME=$JAVA_HOME"
-        export ANDROID_HOME=$HOME/android-sdk
-        mkdir -p $ANDROID_HOME
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "build-tools;33.0.2" --sdk_root=$ANDROID_HOME --verbose
+        sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-33" "build-tools;33.0.2"
       env:
+        ANDROID_HOME: ${{ runner.temp }}/android-sdk
         JAVA_HOME: ${{ env.JAVA_HOME }}
         
     - name: Build APK
@@ -49,12 +46,10 @@ jobs:
         chmod +x gradlew
         export ANDROID_HOME=$HOME/android-sdk
         export JAVA_HOME=$JAVA_HOME_17_X64
-        ./gradlew assembleDebug --info 2>&1 | tail -100
-        ls -la app/build/outputs/apk/debug/
+        ./gradlew assembleDebug
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
-      if: always()
       with:
-        name: app-debug
+        name: app-debug.apk
         path: android/app/build/outputs/apk/debug/app-debug.apk
