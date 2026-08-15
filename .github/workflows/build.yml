@@ -39,7 +39,7 @@ jobs:
       run: |
         export ANDROID_HOME=$HOME/android-sdk
         mkdir -p $ANDROID_HOME
-        sdkmanager "platforms;android-34" "build-tools;34.0.0" --sdk_root=$ANDROID_HOME
+        yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" --sdk_root=$ANDROID_HOME
       env:
         JAVA_HOME: ${{ env.JAVA_HOME }}
         
