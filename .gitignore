@@ -33,7 +33,4 @@ yarn-error.log*
 # Gradle
 android/.gradle/
 android/local.properties
-
-# Android Studio
-android/gradle/wrapper/gradle-wrapper.jar
 !.github/
